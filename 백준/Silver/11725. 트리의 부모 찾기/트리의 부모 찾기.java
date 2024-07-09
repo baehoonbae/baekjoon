@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-class Main {
+public class Main {
     static List<Integer>[] list;
     static int[] parent;
     static boolean[] visited;
@@ -34,12 +34,20 @@ class Main {
         br.close();
     }
 
-    public static void findParents(int node) {
-        visited[node] = true;
-        for (int child : list[node]) {
-            if (!visited[child]) {
-                parent[child] = node;
-                findParents(child);
+    public static void findParents(int root) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(root);
+        visited[root] = true;
+
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+
+            for (int child : list[node]) {
+                if (!visited[child]) {
+                    parent[child] = node;
+                    visited[child] = true;
+                    stack.push(child);
+                }
             }
         }
     }
