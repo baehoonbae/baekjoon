@@ -9,22 +9,29 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        long a = Integer.parseInt(st.nextToken());
-        long b = Integer.parseInt(st.nextToken());
+        long a = Long.parseLong(st.nextToken());
+        long b = Long.parseLong(st.nextToken());
 
         st = new StringTokenizer(br.readLine());
-        long c = Integer.parseInt(st.nextToken());
-        long d = Integer.parseInt(st.nextToken());
+        long c = Long.parseLong(st.nextToken());
+        long d = Long.parseLong(st.nextToken());
 
         long num1 = a * d + b * c;
         long num2 = b * d;
-        for (long i = Math.min(num1, num2) / 2; i >= 2; i--) {
-            if (num1 % i == 0 && num2 % i == 0) {
-                num1 /= i;
-                num2 /= i;
-            }
-        }
+        long gcd = gcd(num1, num2);
+        num1 /= gcd;
+        num2 /= gcd;
+
         sb.append(num1).append(" ").append(num2);
         System.out.println(sb);
+    }
+
+    public static long gcd(long a, long b) {
+        while (b != 0) {
+            long temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
     }
 }
