@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 
 public class Solution {
     static int[][] arr;
-    static Integer[][] memo;
     static int d, w, k, minCount;
 
     public static void main(String[] args) throws IOException {
@@ -23,17 +22,16 @@ public class Solution {
             w = Integer.parseInt(st.nextToken());
             k = Integer.parseInt(st.nextToken());
             arr = new int[d][w];
-
             for (int i = 0; i < d; i++) {
                 st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < w; j++) {
                     arr[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
+
             if (k == 1 || check()) {
                 sb.append(0).append("\n");
             } else {
-                memo = new Integer[d][1 << d];
                 input(0, 0);
                 sb.append(minCount).append("\n");
             }
@@ -61,8 +59,6 @@ public class Solution {
         }
         fill(idx, 0);
         input(idx + 1, membrane + 1);
-        revert(origin);
-
         fill(idx, 1);
         input(idx + 1, membrane + 1);
         revert(origin);
