@@ -29,9 +29,10 @@ public class Main {
                 return minTree[i] = arr[s];
             }
             int mid = (s + e) / 2;
-            int val1 = minInit(i * 2, s, mid);
-            int val2 = minInit(i * 2 + 1, mid + 1, e);
-            return minTree[i] = Math.min(val1, val2);
+            return minTree[i] = Math.min(
+                    minInit(i * 2, s, mid),
+                    minInit(i * 2 + 1, mid + 1, e)
+            );
         }
 
         int maxInit(int i, int s, int e) {
@@ -39,9 +40,10 @@ public class Main {
                 return maxTree[i] = arr[s];
             }
             int mid = (s + e) / 2;
-            int val1 = maxInit(i * 2, s, mid);
-            int val2 = maxInit(i * 2 + 1, mid + 1, e);
-            return maxTree[i] = Math.max(val1, val2);
+            return maxTree[i] = Math.max(
+                    maxInit(i * 2, s, mid),
+                    maxInit(i * 2 + 1, mid + 1, e)
+            );
         }
 
         int minSearch(int i, int s, int e, int l, int r) {
