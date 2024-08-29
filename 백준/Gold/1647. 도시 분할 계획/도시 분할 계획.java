@@ -8,6 +8,8 @@ import java.util.StringTokenizer;
 // 최소 스패닝 트리로 도시들을 한번에 연결시키는 문제
 // 그러나 두 개의 도시를 최소의 간선으로 연결시켜야 하기 때문에
 // 하나의 최소 스패닝 트리에서 가장 비싼 간선 하나를 제거하면 두 개의 최소 스패닝 트리가 나올 것.
+// 간선의 수가 정점의 수에 비해 많이 주어진다면 프림 알고리즘이 더 나을 수 있다.
+// 시간이 남으면 경로 압축 하자 ->
 public class Main {
     public static class Node implements Comparable<Node> {
         int start;
@@ -27,6 +29,7 @@ public class Main {
     }
 
     static int[] parent;
+    static int[] rank;
     static PriorityQueue<Node> pq = new PriorityQueue<Node>();
     static int n, m, maxCost, minCost;
 
@@ -37,11 +40,13 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         parent = new int[n + 1];
+        rank = new int[n + 1];
         maxCost = Integer.MIN_VALUE;
         minCost = 0;
 
         for (int i = 1; i <= n; i++) {
             parent[i] = i;
+            rank[i] = 1;
         }
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
@@ -73,9 +78,14 @@ public class Main {
     public static void union(int a, int b) {
         a = find(a);
         b = find(b);
-        if (a == b) {
-            return;
+        if (a == b) return;
+        if (rank[a] < rank[b]) {
+            parent[a] = b;
+        } else if (rank[a] > rank[b]) {
+            parent[b] = a;
+        } else {
+            parent[b] = a;
+            rank[a]++;
         }
-        parent[b] = a;
     }
 }
