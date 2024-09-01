@@ -1,22 +1,25 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 
-// 2470. 두 용액 / 골드5 / 3:55~ 4:03
+// 2470. 두 용액 / 골드5 / 3:55~4:03
 // 정렬 -> 투포인터 -> 절댓값 최솟값 찾기
 public class Main {
     static int[] arr;
     static int[] temp;
     static int n;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
         arr = new int[n + 1];
         temp = new int[n + 1];
 
-        sc.nextLine();
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 1; i <= n; i++) {
-            arr[i] = sc.nextInt();
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
         query(1, n);
@@ -27,13 +30,15 @@ public class Main {
         int lVal = arr[left];
         int rVal = arr[right];
         while (left < right) {
-            if (minVal > Math.abs(arr[left] + arr[right])) {
-                minVal = Math.abs(arr[left] + arr[right]);
+            int sum = arr[left] + arr[right];
+            int absSum = Math.abs(sum);
+            if (minVal > absSum) {
+                minVal = absSum;
                 lVal = arr[left];
                 rVal = arr[right];
 
             }
-            if (arr[left] + arr[right] < 0) {
+            if (sum < 0) {
                 left++;
             } else {
                 right--;
