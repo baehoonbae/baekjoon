@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-// 7733. 치즈 도둑 / D4 / 9:48 ~ 10:10
+// 7733. 치즈 도둑 / D4 / 9:48 ~ 10:15
 // 100초까지
 // 시간이 1초씩 지날때마다 시간만큼의 칸은 모두 제거(-1로)
 // 덩어리 몇개인지 확인
