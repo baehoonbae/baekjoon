@@ -44,7 +44,7 @@ public class Main {
         Map<Integer,Integer> group=new HashMap<>();
         for(int i=0;i<n;i++){
             group.merge(find(i),1,Integer::sum);
-        }
+        }        
         int max=0;
         for(Map.Entry<Integer,Integer> entry:group.entrySet()){
             max=Math.max(entry.getValue(),max);
@@ -58,10 +58,10 @@ public class Main {
         int ccw2=ccw(l2.x1,l2.y1,l2.x2,l2.y2,l1.x1,l1.y1)*ccw(l2.x1,l2.y1,l2.x2,l2.y2,l1.x2,l1.y2);
         if(ccw1<=0&&ccw2<=0){
             if(ccw1==0&&ccw2==0){
-                return Math.max(l2.x1, l2.x2) >= Math.min(l1.x1, l1.x2) &&
-                        Math.max(l1.x1, l1.x2) >= Math.min(l2.x1, l2.x2) &&
-                        Math.max(l2.y1, l2.y2) >= Math.min(l1.y1, l1.y2) &&
-                        Math.max(l1.y1, l1.y2) >= Math.min(l2.y1, l2.y2);
+                return Math.min(l1.x1,l1.x2)<=Math.max(l2.x1,l2.x2)&&
+                        Math.min(l2.x1,l2.x2)<=Math.max(l1.x1,l1.x2)&&
+                        Math.min(l1.y1,l1.y2)<=Math.max(l2.y1,l2.y2)&&
+                        Math.min(l2.y1,l2.y2)<=Math.max(l1.y1,l1.y2);
             }
             return true;
         }
