@@ -26,7 +26,11 @@ public class Main {
         for(int i=0;i<k;i++){
             int num=Integer.parseInt(st.nextToken());
             int idx=Arrays.binarySearch(arr,num);
-            idx=idx<0?-(idx+1):idx+1;
+            if(idx<0){
+                idx=-(idx+1);
+            }else{
+                idx++;
+            }
             while(idx<m&&used[idx]){idx++;}
             used[idx]=true;
             bw.write(arr[idx]+"\n");
