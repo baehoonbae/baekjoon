@@ -16,7 +16,7 @@ public class Main {
         m=Integer.parseInt(st.nextToken());
         k=Integer.parseInt(st.nextToken());
         arr=new int[m];
-        parent=new int[m];
+        parent=new int[m+1];
         st=new StringTokenizer(br.readLine());
         for(int i=0;i<m;i++){
             arr[i]=Integer.parseInt(st.nextToken());
@@ -26,21 +26,28 @@ public class Main {
         st=new StringTokenizer(br.readLine());
         for(int i=0;i<k;i++){
             int num=Integer.parseInt(st.nextToken());
-            int idx=Arrays.binarySearch(arr,num);
-            if(idx<0){
-                idx=-(idx+1);
-            }else{
-                idx++;
-            }
-            int cardIdx=find(idx);
-            if(cardIdx<m-1){
-                union(cardIdx+1,cardIdx);
-            }
-            bw.write(arr[cardIdx]+"\n");
+            int idx=binarySearch(arr,num);
+            idx=find(idx);
+            bw.write(arr[idx]+"\n");
+            union(idx,idx+1);
         }
         bw.flush();
         bw.close();
         br.close();
+    }
+
+    private static int binarySearch(int[] arr,int num){
+        int left=0;
+        int right=arr.length-1;
+        while(left<=right){
+            int mid=(left+right)/2;
+            if(num>=arr[mid]){
+                left=mid+1;
+            } else {
+                right=mid-1;
+            }
+        }
+        return left;
     }
 
     private static int find(int x){
@@ -53,7 +60,7 @@ public class Main {
     private static void union(int a,int b){
         a=find(a);
         b=find(b);
-        if(a==b) return;
-        parent[b]=a;
+        if(a>b) parent[b]=a;
+        else parent[a]=b;
     }
 }
