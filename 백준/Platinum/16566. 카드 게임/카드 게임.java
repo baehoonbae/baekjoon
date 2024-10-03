@@ -7,7 +7,7 @@ public class Main {
     static BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
     static int[] arr;
-    static boolean[] used;
+    static int[] parent;
     static int n,m,k;
 
     public static void main(String[] args)throws IOException {
@@ -16,10 +16,11 @@ public class Main {
         m=Integer.parseInt(st.nextToken());
         k=Integer.parseInt(st.nextToken());
         arr=new int[m];
-        used=new boolean[m];
+        parent=new int[m];
         st=new StringTokenizer(br.readLine());
         for(int i=0;i<m;i++){
             arr[i]=Integer.parseInt(st.nextToken());
+            parent[i]=i;
         }
         Arrays.sort(arr);
         st=new StringTokenizer(br.readLine());
@@ -31,12 +32,28 @@ public class Main {
             }else{
                 idx++;
             }
-            while(idx<m&&used[idx]){idx++;}
-            used[idx]=true;
-            bw.write(arr[idx]+"\n");
+            int cardIdx=find(idx);
+            if(cardIdx<m-1){
+                union(cardIdx+1,cardIdx);
+            }
+            bw.write(arr[cardIdx]+"\n");
         }
         bw.flush();
         bw.close();
         br.close();
+    }
+
+    private static int find(int x){
+        if(x!=parent[x]){
+            return parent[x]=find(parent[x]);
+        }
+        return x;
+    }
+
+    private static void union(int a,int b){
+        a=find(a);
+        b=find(b);
+        if(a==b) return;
+        parent[b]=a;
     }
 }
