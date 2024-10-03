@@ -1,10 +1,9 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+    static BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
     static BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
     static int[] arr;
@@ -30,7 +29,10 @@ public class Main {
             idx=idx<0?-(idx+1):idx+1;
             while(idx<m&&used[idx]){idx++;}
             used[idx]=true;
-            System.out.println(arr[idx]);
+            bw.write(arr[idx]+"\n");
         }
+        bw.flush();
+        bw.close();
+        br.close();
     }
 }
