@@ -45,24 +45,8 @@ public class Main {
         S34=S3*S4;
         if(S12<=0&&S34<0||S12<0&&S34<=0){   // 1
             System.out.println(1);
-            String s1=slope(A,B);
-            String s2=slope(C,D);
-            double x,y;
-            if(s1.equals("INF")){
-                x=A.x;
-                double slope2=Double.parseDouble(s2);
-                y=slope2*(x-C.x)+C.y;
-            }else if(s2.equals("INF")){
-                x=C.x;
-                double slope1=Double.parseDouble(s1);
-                y=slope1*(x-A.x)+A.y;
-            }else{
-                double slope1=Double.parseDouble(s1);
-                double slope2=Double.parseDouble(s2);
-                x=(slope1*A.x-slope2*C.x+C.y-A.y)/(slope1-slope2);
-                y=slope1*(x-A.x)+A.y;
-            }
-            System.out.println(x+" "+y);
+            double[] ans=slope(A,B,C,D);
+            System.out.println(ans[0]+" "+ans[1]);
         }else if(S12==0&&S34==0){   // 2
             if(S1==0&&S2==0&&S3==0&&S4==0){
                 int n=isCrossed(A,B,C,D);
@@ -98,35 +82,24 @@ public class Main {
         return 0;
     }
 
-    private static String slope(Point A,Point B) {
-        if (A.x == B.x){
-            return "INF";
+    private static double[] slope(Point A,Point B,Point C,Point D) {
+        double m1=(double)(B.y-A.y)/(B.x-A.x);
+        double m2=(double)(D.y-C.y)/(D.x-C.x);
+
+        double b1=A.y-m1*A.x;
+        double b2=C.y-m2*C.x;
+
+        double x=(b1-b2)/(m2-m1);
+        double y=m1*x+b1;
+
+        if(A.x==B.x) {
+            x=A.x;
+            y=m2*x+b2;
+        }else if(C.x==D.x) {
+            x=C.x;
+            y=m1*x+b1;
         }
-        return String.valueOf(((double) B.y - A.y) / (B.x - A.x));
-
-//        double px=(double)((A.x*B.y-A.y*B.x)*(C.x-D.x)-(A.x-B.x)*(C.x*D.y-C.y*D.x))/
-//                ((A.x-B.x)*(C.y-D.y)-(A.y-B.y)*(C.x-D.x));
-//        double py=(double)((A.x*B.y-A.y*B.x)*(C.y-D.y)-(A.y-B.y)*(C.x*D.y-C.y*D.x))/
-//                ((A.x-B.x)*(C.y-D.y)-(A.y-B.y)*(C.x-D.x));
-//        return new double[]{px,py};
-
-//        double m1=(double)(B.y-A.y)/(B.x-A.x);
-//        double m2=(double)(D.y-C.y)/(D.x-C.x);
-//
-//        double b1=A.y-m1*A.x;
-//        double b2=C.y-m2*C.x;
-//
-//        double x=(b1-b2)/(m2-m1);
-//        double y=m1*x+b1;
-//
-//        if(A.x==B.x) {
-//            x=A.x;
-//            y=m2*x+b2;
-//        }else if(C.x==D.x) {
-//            x=C.x;
-//            y=m1*x+b1;
-//        }
-//        return new double[] {x,y};
+        return new double[] {x,y};
     }
 
     private static int isCrossed(Point A,Point B,Point C,Point D){
