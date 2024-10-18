@@ -31,20 +31,25 @@ class Main {
     public static void main(String[] args) throws IOException {
         n=Integer.parseInt(br.readLine());
         Point[] points=new Point[n];
-        for(int i=0;i<n;i++){
-            st=new StringTokenizer(br.readLine());
-            long x=Long.parseLong(st.nextToken());
-            long y=Long.parseLong(st.nextToken());
-            points[i]=new Point(x,y);
-        }
-        // 점정렬부터
-        Arrays.sort(points,(a,b)->{
-            if(a.x==b.x)return Long.compare(a.y,b.y);
-            return Long.compare(a.x,b.x);
-        });
-        // 맨 밑에 점이 베이스임
+
+        st=new StringTokenizer(br.readLine());
+        long x=Long.parseLong(st.nextToken());
+        long y=Long.parseLong(st.nextToken());
+        points[0]=new Point(x,y);
         Point.base=points[0];
 
+        for(int i=1;i<n;i++){
+            st=new StringTokenizer(br.readLine());
+            x=Long.parseLong(st.nextToken());
+            y=Long.parseLong(st.nextToken());
+            points[i]=new Point(x,y);
+            if(x<Point.base.x||(x==Point.base.x&&y<Point.base.y)){
+                Point temp=points[i];
+                points[i]=points[0];
+                points[0]=temp;
+                Point.base=points[0];
+            }
+        }
         // 반시계방향이고 거리가 가까운거부터 정렬(1: 반시계, -1:시계)
         Arrays.sort(points,1,points.length,(a,b)->{
             int ccw=Point.ccw(Point.base,a,b);
