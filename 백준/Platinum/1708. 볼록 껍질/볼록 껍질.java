@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
+import java.util.List;
 import java.util.StringTokenizer;
 
 class Main {
@@ -56,14 +57,14 @@ class Main {
     }
 
     private static int scan(Point[] points) {
-        Stack<Point>s=new Stack<>();
-        s.push(points[0]);
-        s.push(points[1]);
+        List<Point> s=new ArrayList<>();
+        s.add(points[0]);
+        s.add(points[1]);
         for(int i=2;i<n;i++){
-            while(s.size()>1&&Point.ccw(s.get(s.size()-2),s.peek(),points[i])!=1){
-                s.pop();
+            while(s.size()>1&&Point.ccw(s.get(s.size()-2),s.get(s.size()-1),points[i])!=1){
+                s.remove(s.size()-1);
             }
-            s.push(points[i]);
+            s.add(points[i]);
         }
         return s.size();
     }
