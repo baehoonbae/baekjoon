@@ -18,6 +18,7 @@ class Main {
         arr=new int[n+1][n+1];
         for(int i=1;i<=n;i++){
             Arrays.fill(arr[i],Integer.MAX_VALUE);
+            arr[i][i]=0;
         }
         for(int i=0;i<m;i++) {
             st=new StringTokenizer(br.readLine());
@@ -39,7 +40,9 @@ class Main {
         for(int k=1;k<=n;k++){
             for(int i=1;i<=n;i++){
                 for(int j=1;j<=n;j++){
-                    arr[i][j]=Math.min(arr[i][j],Math.max(arr[i][k],arr[k][j]));
+                    if(arr[i][j]>Math.max(arr[i][k],arr[k][j])){
+                        arr[i][j]=Math.max(arr[i][k],arr[k][j]);
+                    }
                 }
             }
         }
