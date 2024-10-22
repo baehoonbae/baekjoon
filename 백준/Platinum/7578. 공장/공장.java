@@ -38,7 +38,7 @@ public class Main {
         int n=Integer.parseInt(br.readLine());
         int[] a=new int[n+1];
         int[] b=new int[n+1];
-        Map<Integer,Integer> bpos=new HashMap<>();
+        int[]bpos=new int[1000001];
 
         st=new StringTokenizer(br.readLine());
         for(int i=1;i<=n;i++) {
@@ -47,14 +47,14 @@ public class Main {
         st=new StringTokenizer(br.readLine());
         for(int i=1;i<=n;i++) {
            b[i]=Integer.parseInt(st.nextToken());
-           bpos.put(b[i],i);
+           bpos[b[i]]=i;
         }
         SegTree t=new SegTree(n);
         long inversion=0;
         // a의값이 b에어디에위치한지 ㅇ찾고
         //b 이후에 처리된inversion만큼 더해야함
         for(int i=1;i<=n;i++){
-            int idx=bpos.get(a[i]);
+            int idx=bpos[a[i]];
             inversion+=t.query(1,1,n,idx+1,n);
             t.update(1,1,n,idx);
         }
