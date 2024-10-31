@@ -1,76 +1,155 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Comparator;
 import java.util.PriorityQueue;
-import java.util.StringTokenizer;
 
-public class Main {
-	static BufferedReader br;
-	static BufferedWriter bw;
-	static int v;
-	static int e;
-	static long minCost;
-	static int edgeCount;
-	static int[] parents;
-	static int[] size;
-	static PriorityQueue<int[]> pq;
+public class Main extends FI {
+    public static class Node implements Comparable<Node> {
+        int start;
+        int end;
+        int cost;
 
-	public static void main(String[] args) throws IOException {
-		br = new BufferedReader(new InputStreamReader(System.in));
-		bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		v = Integer.parseInt(st.nextToken());
-		e = Integer.parseInt(st.nextToken());
-		parents = new int[v + 1];
-		size = new int[v + 1];
-		for (int i = 1; i <= v; i++) {
-			parents[i] = i;
-			size[i] = 1;
-		}
-		pq = new PriorityQueue<>(Comparator.comparingInt(edge -> edge[2]));
-		for (int i = 0; i < e; i++) {
-			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			int cost = Integer.parseInt(st.nextToken());
-			pq.add(new int[] { a, b, cost });
-		}
-		while (!pq.isEmpty() && edgeCount < (v - 1)) {
-			int[] info = pq.poll();
-			if (find(info[0]) != find(info[1])) {
-				minCost += info[2];
-				union(info[0], info[1]);
-				edgeCount++;
-			}
-		}
-		bw.write(String.valueOf(minCost));
-		bw.flush();
-		br.close();
-		br.close();
-	}
+        public Node(int start, int end, int cost) {
+            this.start = start;
+            this.end = end;
+            this.cost = cost;
+        }
 
-	public static int find(int u) {
-		if (u == parents[u]) {
-			return u;
-		}
-		return find(parents[u]);
-	}
+        @Override
+        public int compareTo(Node o) {
+            return this.cost - o.cost;
+        }
+    }
 
-	public static void union(int u, int v) {
-		u = find(u);
-		v = find(v);
-		if (u == v) {
-			return;
-		}
-		if (size[u] < size[v]) {
-			parents[u] = v;
-			size[u] += size[v];
-		} else {
-			parents[v] = u;
-			size[v] += size[u];
-		}
-	}
+    static int[] parent;
+    static int[] rank;
+    static PriorityQueue<Node> pq = new PriorityQueue<>();
+    static int n, m, maxCost, minCost;
+
+    public static void main(String[] args) throws IOException {
+        initFI();
+        n = nextInt();
+        m = nextInt();
+        parent = new int[n + 1];
+        rank=new int[n+1];
+        maxCost = Integer.MIN_VALUE;
+        minCost = 0;
+
+        for (int i = 1; i <= n; i++) {
+            parent[i] = i;
+            rank[i] = 1;
+        }
+        for (int i = 0; i < m; i++) {
+            int a = nextInt();
+            int b = nextInt();
+            int cost = nextInt();
+            pq.add(new Node(a, b, cost));
+        }
+        int edgeCount = 0;
+        while (!pq.isEmpty() && edgeCount < n - 1) {
+            Node node = pq.poll();
+            if (find(node.start) != find(node.end)) {
+                minCost += node.cost;
+                union(node.start, node.end);
+                edgeCount++;
+            }
+        }
+        System.out.println(minCost);
+    }
+
+    public static int find(int x) {
+        if (parent[x] == x) {
+            return x;
+        }
+        return parent[x] = find(parent[x]);
+    }
+
+    public static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return;
+        if (rank[a] < rank[b]) {
+            parent[a] = b;
+            rank[b]++;
+        } else if (rank[a] > rank[b]) {
+            parent[b] = a;
+            rank[a]++;
+        }else{
+            parent[b]=a;
+            rank[a]++;
+        }
+    }
+}
+
+class FI {
+    private static final int DEFAULT_BUFFER_SIZE = 1 << 16;
+    private static DataInputStream inputStream;
+    private static byte[] buffer;
+    private static int curIdx, maxIdx;
+
+    protected static void initFI() {
+        inputStream = new DataInputStream(System.in);
+        buffer = new byte[DEFAULT_BUFFER_SIZE];
+        curIdx = maxIdx = 0;
+    }
+
+    protected static int nextInt() throws IOException {
+        int ret = 0;
+        byte c = read();
+        while (c <= ' ') c = read();
+        boolean neg = (c == '-');
+        if (neg) c = read();
+        do {
+            ret = ret * 10 + c - '0';
+        } while ((c = read()) >= '0' && c <= '9');
+        if (neg) return -ret;
+        return ret;
+    }
+
+    protected static double nextDouble() throws IOException {
+        double ret = 0, div = 1;
+        byte c = read();
+        while (c <= ' ') c = read();
+        do {
+            ret = ret * 10 + c - '0';
+        } while ((c = read()) >= '0' && c <= '9');
+        if (c == '.') while ((c = read()) >= '0' && c <= '9')
+            ret += (c - '0') / (div *= 10);
+        return ret;
+    }
+
+    protected static long nextLong() throws IOException {
+        long ret = 0;
+        byte c = read();
+        while (c <= ' ') c = read();
+        boolean neg = (c == '-');
+        if (neg) c = read();
+        do {
+            ret = ret * 10 + c - '0';
+        } while ((c = read()) >= '0' && c <= '9');
+        if (neg) return -ret;
+        return ret;
+    }
+
+    protected static String next() throws IOException {
+        StringBuilder sb = new StringBuilder();
+        byte c = read();
+
+        // 공백 문자는 무시하고 다음 문자를 읽음
+        while (c <= ' ') c = read();
+
+        // 공백이 아닌 문자들을 읽어 문자열 생성
+        while (c > ' ') {
+            sb.append((char) c);
+            c = read();
+        }
+        return sb.toString();
+    }
+
+    private static byte read() throws IOException {
+        if (curIdx == maxIdx) {
+            maxIdx = inputStream.read(buffer, curIdx = 0, DEFAULT_BUFFER_SIZE);
+            if (maxIdx == -1) buffer[0] = -1;
+        }
+        return buffer[curIdx++];
+    }
 }
