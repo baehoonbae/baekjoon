@@ -1,9 +1,6 @@
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class Main extends FI1 {
     static int v,e,id;
@@ -11,7 +8,7 @@ public class Main extends FI1 {
     static boolean[] finished;
     static List<Integer>[] adj;
     static Stack<Integer> stack;
-    static List<List<Integer>> SCC;
+    static List<int[]> SCC;
 
 
     public static void main(String[] args) throws IOException {
@@ -28,15 +25,17 @@ public class Main extends FI1 {
         stack=new Stack<>();
         SCC =new ArrayList<>();
         id=0;
+
         for(int i=0;i<e;i++){
-            int a=nextInt();
-            int b=nextInt();
-            adj[a].add(b);
+            adj[nextInt()].add(nextInt());
         }
         for(int i=1;i<=v;i++){
             if(d[i]==0)dfs(i);
         }
-        Collections.sort(SCC,(a, b)->a.get(0)-b.get(0));
+        for(int[] scc:SCC){
+            Arrays.sort(scc);
+        }
+        Collections.sort(SCC,(a, b)->a[0]-b[0]);
 
         System.out.println(SCC.size());
         for(int i = 0; i< SCC.size(); i++){
@@ -61,15 +60,16 @@ public class Main extends FI1 {
         }
         // 부모노드가 자기 자신인 경우이다(사이클이 생긴 경우임)
         if(p==d[v]){
-            ArrayList<Integer>scc=new ArrayList<>();
+            int size=stack.size();
+            int[] scc=new int[size];
+            int idx=0;
             while(true){
                 int t=stack.pop();
-                scc.add(t);
+                scc[idx++]=t;
                 finished[t]=true;
                 if(t==v)break;
             }
-            Collections.sort(scc);
-            SCC.add(scc);
+            SCC.add(Arrays.copyOf(scc,idx));
         }
         return p;
     }
