@@ -35,8 +35,9 @@ public class Main extends FI1 {
         }
         for(int i=1;i<=v;i++){
             if(d[i]==0)dfs(i);
-            Collections.sort(SCC,(a, b)->a.get(0)-b.get(0));
         }
+        Collections.sort(SCC,(a, b)->a.get(0)-b.get(0));
+
         System.out.println(SCC.size());
         for(int i = 0; i< SCC.size(); i++){
             for(int num: SCC.get(i)){
@@ -58,7 +59,7 @@ public class Main extends FI1 {
                 p=Math.min(p,d[next]);
             }
         }
-        // 부모노드가 자기 자신인 경우이다(
+        // 부모노드가 자기 자신인 경우이다(사이클이 생긴 경우임)
         if(p==d[v]){
             ArrayList<Integer>scc=new ArrayList<>();
             while(true){
