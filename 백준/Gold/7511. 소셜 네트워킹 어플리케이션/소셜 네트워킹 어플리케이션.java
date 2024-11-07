@@ -3,6 +3,7 @@ import java.io.IOException;
 
 public class Main extends FI1 {
     static int[] parent;
+    static int[] rank;
 
     public static void main(String[] args)throws IOException {
         initFI();
@@ -10,8 +11,10 @@ public class Main extends FI1 {
         for(int T=1;T<=t;T++){
             int n=nextInt();
             parent=new int[n];
+            rank=new int[n];
             for(int i=0;i<n;i++){
                 parent[i]=i;
+                rank[i]=1;
             }
             int k=nextInt();
             for(int i=0;i<k;i++){
@@ -38,7 +41,13 @@ public class Main extends FI1 {
         a=find(a);
         b=find(b);
         if(a==b)return;
-        parent[b]=a;
+        if(rank[a]<rank[b]){
+            parent[a]=b;
+            rank[b]++;
+        }else if(rank[a]>=rank[b]){
+            parent[b]=a;
+            rank[a]++;
+        }
     }
 }
 
