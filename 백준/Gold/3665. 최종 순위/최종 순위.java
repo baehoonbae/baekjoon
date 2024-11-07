@@ -2,11 +2,10 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.*;
 
-// 10425. 피보나치 인버스 / 실버2 / 10:17 ~ 10:22
 public class Main extends FI1 {
     static int n;
     static int[] inDegree;
-    static Set<Integer>[] adj;
+    static List<Integer>[] adj;
     static int[] arr;
 
     public static void main(String[] args)throws IOException {
@@ -16,13 +15,13 @@ public class Main extends FI1 {
         while(t-->0){
             n=nextInt();
             inDegree=new int[n+1];
-            adj=new Set[n+1];
+            adj=new List[n+1];
             arr=new int[n+1];
             Arrays.fill(inDegree,0);
 
             for(int i=1;i<=n;i++){
                 arr[i]=nextInt();
-                adj[i]=new HashSet<>();
+                adj[i]=new ArrayList<>();
             }
             for(int i=1;i<=n;i++){
                 for(int j=i+1;j<=n;j++){
@@ -34,13 +33,11 @@ public class Main extends FI1 {
             for(int i=0;i<m;i++){
                 int a=nextInt();
                 int b=nextInt();
-                if(adj[b].contains(a)){
-                    adj[b].remove(a);
+                if(adj[b].remove(Integer.valueOf(a))){
                     inDegree[a]--;
                     adj[a].add(b);
                     inDegree[b]++;
-                }else if(adj[a].contains(b)){
-                    adj[a].remove(b);
+                }else if(adj[a].remove(Integer.valueOf(b))){
                     inDegree[b]--;
                     adj[b].add(a);
                     inDegree[a]++;
@@ -49,10 +46,7 @@ public class Main extends FI1 {
             StringBuilder sb=new StringBuilder();
             Queue<Integer>q=new LinkedList<>();
             for(int i=1;i<=n;i++){
-                if(inDegree[i]==0){
-                    sb.append(i).append(" ");
-                    q.add(i);
-                }
+                if(inDegree[i]==0)q.add(i);
             }
             if(q.size()>=2){
                 System.out.println("?");
@@ -60,12 +54,10 @@ public class Main extends FI1 {
             }
             while(!q.isEmpty()){
                 int cur=q.poll();
+                sb.append(cur).append(" ");
                 for(int next:adj[cur]){
                     inDegree[next]--;
-                    if(inDegree[next]==0){
-                        sb.append(next).append(" ");
-                        q.add(next);
-                    }
+                    if(inDegree[next]==0)q.add(next);
                 }
             }
             for(int i=1;i<=n;i++){
@@ -76,12 +68,6 @@ public class Main extends FI1 {
             }
             System.out.println(sb);
         }
-    }
-
-    private static void swap(int a, int b) {
-        int temp=arr[a];
-        arr[a]=arr[b];
-        arr[b]=temp;
     }
 }
 
