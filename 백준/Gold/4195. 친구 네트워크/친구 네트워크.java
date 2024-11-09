@@ -19,8 +19,8 @@ public class Main extends FI1 {
             parent=new int[200011];
             rank=new int[200011];
             count=new int[200011];
-            ids=new HashMap<>();
-            for(int i=1;i<=200000;i++){
+            ids = new HashMap<>((int)(2*n/0.75) + 1);
+            for(int i=1;i<=2*n;i++){
                 parent[i]=i;
                 rank[i]=1;
                 count[i]=1;
