@@ -10,11 +10,12 @@ public class Main extends FI1 {
         m=nextInt();
         k=nextInt();
         if(k==0){
-            System.out.println(dfs(1,1,n,m));
+            System.out.println(dfs(0,0,n-1,m-1));
         }else{
-            System.out.println(dfs(1,1,(k/m)+1,k%m)*dfs((k/m)+1,k%m,n,m));
+            k--;
+            System.out.println(dfs(0,0,k/m,k%m)*dfs(k/m,k%m,n-1,m-1));
         }
-        }
+    }
 
     private static int dfs(int y,int x,int ey,int ex){
         if(y>ey||x>ex)return 0;
