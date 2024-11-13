@@ -8,7 +8,6 @@ public class Main {
     static StringTokenizer st;
     static int n,m;
     static List<Integer>[] adj;
-    static int[] pmatched;
     static int[] jmatched;
     static boolean[]visited;
 
@@ -17,8 +16,7 @@ public class Main {
         n=Integer.parseInt(st.nextToken());
         m=Integer.parseInt(st.nextToken());
         adj=new List[n+1];
-        pmatched=new int[n+1];
-        jmatched=new int[m+1];
+        jmatched=new int[1011];
 
         for(int i=1;i<=n;i++){
             adj[i]=new ArrayList<>();
@@ -30,11 +28,12 @@ public class Main {
                 int a=Integer.parseInt(st.nextToken());
                 adj[i].add(a);
             }
+            Collections.sort(adj[i]);
         }
         int match=0;
         for(int i=1;i<=n;i++){
             for(int j=0;j<2;j++){
-                visited=new boolean[n+1];
+                visited=new boolean[1011];
                 if(dfs(i))match++;
             }
         }
@@ -50,13 +49,6 @@ public class Main {
                 jmatched[next]=cur;
                 return true;
             }
-//            for(int i:matched[next]){
-//                if(dfs(i)){
-//                    matched[next].remove(i);
-//                    matched[next].add(cur);
-//                    return true;
-//                }
-//            }
         }
         return false;
     }
