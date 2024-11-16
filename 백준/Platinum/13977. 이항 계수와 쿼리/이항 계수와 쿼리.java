@@ -8,11 +8,20 @@ public class Main extends FI1 {
         initFI();
 
         long[] fact=new long[4000011];
+        long[] ifact=new long[4000011];
+
         fact[0]=fact[1]=1;
         for(int i=2;i<=4000000;i++){
             fact[i]=(fact[i-1]*i)%MOD;
         }
 
+        ifact[4000000]=mpow(fact[4000000],MOD-2);
+        for(int i=3999999;i>=1;i--){
+            ifact[i]=(ifact[i+1]*(i+1))%MOD;
+        }
+        ifact[0]=1;
+
+        StringBuilder sb=new StringBuilder();
         int m=nextInt();
         for(int t=0;t<m;t++){
             int n=nextInt();
@@ -21,23 +30,28 @@ public class Main extends FI1 {
             // 4,000,000*100,000 이될수있어서 터진다
             // 전처리해서 처리해야할듯하다
             long num1=fact[n];
-            long num2=(fact[k]*fact[n-k])%MOD;
+            long num2=(ifact[k]*ifact[n-k])%MOD;
 
             // 모듈러한것끼리 나누기 불가능함(원래의 비율을 나타낼 수 없다)
             // a/b %MOD => (a*b^(-1)) %MOD  (페르마 소정리)
             // => (a*b^(MOD-2)%MOD)%MOD
             // num2 를 MOD-2번 거듭제곱(하면서 %MOD)
-            long b=MOD-2;
-            long res=1;
-            long mul=num2%MOD;
-            while(b>0){
-                if(b%2==1) res=(res*mul)%MOD;
+            // 애초에 팩토리얼의 역원을 먼저 구해놓는것도 더 최적화가능할것같다.
 
-                mul=(mul*mul)%MOD;
-                b/=2;
-            }
-            System.out.println((num1*res)%MOD);
+            sb.append((num1*num2)%MOD).append("\n");
         }
+        System.out.print(sb);
+    }
+
+    private static long mpow(long mul,long b){
+        long res=1;
+        while(b>0){
+            if(b%2==1) res=(res*mul)%MOD;
+
+            mul=(mul*mul)%MOD;
+            b/=2;
+        }
+        return res;
     }
 }
 
